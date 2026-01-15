@@ -1,0 +1,72 @@
+:root {
+  --bg-color: #121214;
+  --surface-color: #202024;
+  --text-primary: #E1E1E6;
+  --text-secondary: #7c7C8a;
+  --brand-color: #8257e5; /* Roxo neon */
+  --danger-color: #e25858;
+}
+
+* {margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-family: sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding-top: 5rem;
+}
+
+.container {
+  width: 100%;
+  max-width: 460px; /* Largura parecida com celular */
+  padding: 0 1rem;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+/* Área de Adicionar (Input + Botão) */
+.input-group {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 3rem;
+}
+
+input {
+  flex: 1; /* Ocupa todo espaço possível */
+  background: var(--surface-color);
+  border: 1px solid #000;
+  color: var(--text-primary);
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+}
+
+input:focus {
+  border-color: var(--brand-color);  
+}
+
+button.add-btn:hover {
+  filter: brightness(1.1);
+}
+
+/* Área da Lista (Vazia por enquanto) */
+.empty-state {
+  color: var(--text-secondary);
+  text-align: center;
+  margin-top: 3rem;
+  border-top: 1px solid var(--surface-color);
+  padding-top: 3rem;
+}
+
+
