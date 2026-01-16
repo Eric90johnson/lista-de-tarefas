@@ -70,3 +70,21 @@ button.add-btn:hover {
 }
 
 
+/* Estilo de cada tarefa individual */
+.task-item {
+  background: var(--surface-color);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.75rem; /* Espaço entre as tarefas */
+  border: 1px solid var(--surface-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Efeito ao passar o mouse */
+.task-item:hover {
+  border-color: var(--brand-color);
+}
+
+
