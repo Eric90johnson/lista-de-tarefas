@@ -1,78 +1,97 @@
-import { useState } from 'react'; // 1. Importamos o "cerebro"
-import { Plus, Trash, Check } from 'lucide-react'; // importando icones extras
+import { useState } from 'react';
+import { Plus, Trash, Check } from 'lucide-react';
 import './App.css';
 
 function App() {
-
-  // Estado para guardar o que o usário está digitando AGORA
-  const [newTask, setNewTask] = useState ('');
-
-  // Estado para guardar a LISTA de tarefas ( começa vazia [])
+  const [newTask, setNewTask] = useState('');
   const [tasks, setTasks] = useState([]);
 
   function handleAddTask() {
-    // 1. Validação: Se não digitou nada, não faz nada
     if (newTask === '') return;
 
-    // 2. Criar o objeto da nova tarefa
     const newTaskItem = {
-      id: Date.now(), // Gera um ID unico baseado no horário atual
+      id: Date.now(),
       title: newTask,
-      isCompleted: false // Começa como "não feita"
+      isCompleted: false
     };
 
-    // 3. Atualizar a lista (imutabilidade)
-    // "Copie tudo que já tem em tasks (...tasks) e adicione o novo item no final
     setTasks([...tasks, newTaskItem]);
-
-    //4. Limpar o campo do texto para a propria tarefa
     setNewTask('');
   }
 
+  // --- NOVA FUNÇÃO 1: Marcar como feita ---
+  function handleToggleTask(id) {
+    const newTasks = tasks.map(task => {
+      // Se for a tarefa que clicamos...
+      if (task.id === id) {
+        // ...retorna ela com o "isCompleted" invertido
+        return { ...task, isCompleted: !task.isCompleted }
+      }
+      // Se não for, retorna igual estava
+      return task;
+    });
+
+    setTasks(newTasks);
+  }
+
+  // --- NOVA FUNÇÃO 2: Deletar ---
+  function handleRemoveTask(id) {
+    // Filtra a lista: Mantém todas que tiverem ID DIFERENTE do que clicamos
+    const filteredTasks = tasks.filter(task => task.id !== id);
+    setTasks(filteredTasks);
+  }
+
   return (
-    <div className='container'>
+    <div className="container">
       <h1>Minha Lista</h1>
 
-      {/* Inputs para adicionar nova tarefa */}
-      <div className='input-group'>
+      <div className="input-group">
         <input 
-            type="text"  
-            placeholder='Adicione uma nova tarefa'
-            // O valor do input é amarrado ao estado
-            value={newTask}
-            // Toda vex que digita, atualiza o estado
-            onChange={(event) => setNewTask (event.target.value)} 
-          />
-        {/* Quando clica, chama a função de adicionar */}
-        <button className='add-btn' onClick={handleAddTask}>
-          <Plus size={24} />    
+          type="text" 
+          placeholder="Adicione uma nova tarefa"
+          value={newTask} 
+          onChange={(event) => setNewTask(event.target.value)}
+        />
+        <button className="add-btn" onClick={handleAddTask}>
+          <Plus size={24} />
         </button>
       </div>
 
-      {/* Onde a lista vai aparecer depois */}
-      <div className='tasks-list'>
-        {/* Lógica Visual:
-            Se a lista estiver vazia (length === 0), mostra a mensgem.
-            Se tiver itens, motra a lista.
-        
-        */}
-
+      <div className="tasks-list">
         {tasks.length === 0 ? (
-          <p className='empty-state'>
-          Você ainda não tem tarefas cadastradas.        
-
-          </p>      
-
+          <p className="empty-state">
+            Você ainda não tem tarefas cadastradas.
+          </p>
         ) : (
-
-          // Se tiver tarefas, mapeamos cada uma para criar um item na tela
           tasks.map((task) => (
-            <div key={task.id} className='task-item'>
-              <span>{task.title}</span>
-            </div>
-          ))          
-        )}    
+            <div key={task.id} className="task-item">
+              
+              {/* O texto ganha uma classe extra se estiver concluído */}
+              <span className={task.isCompleted ? "text-completed" : ""}>
+                {task.title}
+              </span>
 
+              <div className="actions">
+                {/* Botão de Concluir */}
+                <button 
+                  className="check-btn" 
+                  onClick={() => handleToggleTask(task.id)}
+                >
+                  <Check size={20} />
+                </button>
+
+                {/* Botão de Deletar */}
+                <button 
+                  className="delete-btn" 
+                  onClick={() => handleRemoveTask(task.id)}
+                >
+                  <Trash size={20} />
+                </button>
+              </div>
+
+            </div>
+          ))
+        )}
       </div>
     </div>
   )

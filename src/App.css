@@ -87,4 +87,44 @@ button.add-btn:hover {
   border-color: var(--brand-color);
 }
 
+/* ... código anterior ... */
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Botão Comum de Ação */
+.actions button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  color: var(--text-secondary);
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Botão de Check (Verde quando passa o mouse) */
+.check-btn:hover {
+  background: #00B37E;
+  color: white;
+}
+
+/* Botão de Deletar (Vermelho quando passa o mouse) */
+.delete-btn:hover {
+  background: var(--danger-color);
+  color: white;
+}
+
+/* O Texto Riscado */
+.text-completed {
+  text-decoration: line-through;
+  color: var(--text-secondary); /* Fica cinza pra indicar que já foi */
+}
+
+
 
