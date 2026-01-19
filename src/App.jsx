@@ -1,10 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react'; // 1. Importamos useEffect
 import { Plus, Trash, Check } from 'lucide-react';
 import './App.css';
 
 function App() {
   const [newTask, setNewTask] = useState('');
-  const [tasks, setTasks] = useState([]);
+
+  // 2. Estado Inteligente: Começa lendo do LocalStorage
+  const [tasks, setTasks] = useState(() => {
+    const storedTasks = localStorage.getItem('minhas-tarefas');
+    if (storedTasks) {
+      return JSON.parse(storedTasks);
+    }
+    return [];
+  });
+
+  // 3. O Vigia: Salva automaticamente sempre que a lista muda
+  useEffect(() => {
+    localStorage.setItem('minhas-tarefas', JSON.stringify(tasks));
+  }, [tasks]);
 
   function handleAddTask() {
     if (newTask === '') return;
@@ -19,24 +32,17 @@ function App() {
     setNewTask('');
   }
 
-  // --- NOVA FUNÇÃO 1: Marcar como feita ---
   function handleToggleTask(id) {
     const newTasks = tasks.map(task => {
-      // Se for a tarefa que clicamos...
       if (task.id === id) {
-        // ...retorna ela com o "isCompleted" invertido
         return { ...task, isCompleted: !task.isCompleted }
       }
-      // Se não for, retorna igual estava
       return task;
     });
-
     setTasks(newTasks);
   }
 
-  // --- NOVA FUNÇÃO 2: Deletar ---
   function handleRemoveTask(id) {
-    // Filtra a lista: Mantém todas que tiverem ID DIFERENTE do que clicamos
     const filteredTasks = tasks.filter(task => task.id !== id);
     setTasks(filteredTasks);
   }
@@ -65,14 +71,11 @@ function App() {
         ) : (
           tasks.map((task) => (
             <div key={task.id} className="task-item">
-              
-              {/* O texto ganha uma classe extra se estiver concluído */}
               <span className={task.isCompleted ? "text-completed" : ""}>
                 {task.title}
               </span>
 
               <div className="actions">
-                {/* Botão de Concluir */}
                 <button 
                   className="check-btn" 
                   onClick={() => handleToggleTask(task.id)}
@@ -80,7 +83,6 @@ function App() {
                   <Check size={20} />
                 </button>
 
-                {/* Botão de Deletar */}
                 <button 
                   className="delete-btn" 
                   onClick={() => handleRemoveTask(task.id)}
@@ -88,7 +90,6 @@ function App() {
                   <Trash size={20} />
                 </button>
               </div>
-
             </div>
           ))
         )}
